@@ -41,6 +41,4 @@ const parser = (str) => {
     return parseString(str);
 }
 
-log(parser('String with a link <a>link <b>with bold</b> content</a> and some text after'));
-
 module.exports.parser = parser;
