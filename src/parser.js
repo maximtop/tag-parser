@@ -1,21 +1,8 @@
+const { tagNode, textNode, isNode } = require('./nodes');
+
 const STATES = {
     TEXT: 'text',
     TAG: 'tag',
-}
-
-const textNode = (str) => {
-    return { type: 'text', value: str };
-}
-
-const tagNode = (tagName, children) => {
-    if (children && children.length > 0) {
-        return { type: 'tag', value: tagName, children};
-    }
-    return { type: 'tag', value: tagName }
-}
-
-const isNode = (checked) => {
-    return !!checked?.type;
 }
 
 const parser = (str) => {

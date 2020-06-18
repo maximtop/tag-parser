@@ -1,4 +1,4 @@
-const { parser } = require('../parser');
+const { parser } = require('../src/parser');
 
 describe('parser', () => {
     it('parses', () => {
@@ -95,3 +95,5 @@ describe('parser', () => {
         }).toThrow('String has unbalanced tags');
     });
 });
+
+

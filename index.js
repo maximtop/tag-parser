@@ -1,3 +1,4 @@
-const parser = require('./parser');
+const parser = require('./src/parser');
+const formatter = require('./src/formatter');
 
-module.exports = parser;
+module.exports = { parser, formatter };

@@ -4,4 +4,11 @@ const log = (obj) => {
     console.log(util.inspect(obj, {showHidden: false, depth: null}));
 };
 
-module.exports.log = log;
+const isFunction = (target) => {
+    return typeof target === 'function';
+}
+
+module.exports = {
+    log,
+    isFunction,
+}
