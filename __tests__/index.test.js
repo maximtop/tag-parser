@@ -3,7 +3,7 @@ const { parser } = require('../parser');
 describe('parser', () => {
     it('parses', () => {
         const str = 'String to translate';
-        const expectedAst = [{type: 'text', value: str}];
+        const expectedAst = [{ type: 'text', value: str }];
         expect(parser(str)).toEqual(expectedAst);
     });
 
@@ -34,7 +34,7 @@ describe('parser', () => {
                     {
                         type: 'tag',
                         value: 'b',
-                        children: [ { type: 'text', value: 'with bold' } ]
+                        children: [{ type: 'text', value: 'with bold' }]
                     },
                     { type: 'text', value: ' content' }
                 ]
@@ -43,5 +43,55 @@ describe('parser', () => {
         ];
 
         expect(parser(str)).toEqual(expectedAst);
-    })
+    });
+
+    it('ignores open braces between tags', () => {
+        const str = '<abc>1 < 2</abc>';
+        const expectedAst = [
+            {
+                type: 'tag',
+                value: 'abc',
+                children: [{ type: 'text', value: '1 < 2' }],
+            },
+        ];
+
+        expect(parser(str)).toEqual(expectedAst);
+    });
+
+    it('ignores closing braces between tags', () => {
+        const str = '<abc>1 > 2</abc>';
+        const expectedAst = [
+            {
+                type: 'tag',
+                value: 'abc',
+                children: [{ type: 'text', value: '1 > 2' }],
+            },
+        ];
+
+        expect(parser(str)).toEqual(expectedAst);
+    });
+
+    it('ignores open braces in children tags', () => {
+        const str = 'some text <a>text < in a<b>< 2</b></a>';
+        const expectedAst = [
+            { type: 'text', value: 'some text ' },
+            {
+                type: 'tag',
+                value: 'a',
+                children: [
+                    { type: 'text', value: 'text < in a' },
+                    { type: 'tag', value: 'b', children: [{ type: 'text', value: '< 2' }] },
+                ],
+            },
+        ];
+
+        expect(parser(str)).toEqual(expectedAst);
+    });
+
+    it('throws error if tag is not balanced', () => {
+        const str = 'text <a>';
+        expect(() => {
+            parser(str);
+        }).toThrow('String has unbalanced tags');
+    });
 });
